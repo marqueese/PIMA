@@ -9,10 +9,32 @@ data = {'Owner': [],
 
 while True:
     owner = input("Owner's name: ")
+    if not owner:
+        print("Please enter the owner's name.")
+        continue
+    
     pet = input("Pet's name: ")
+    if not pet:
+        print("Please enter the pet's name.")
+        continue
+    
     item = input("Item description: ")
-    quantity = int(input("Quantity: "))
-    price = float(input("Price: "))
+    if not item:
+        print("Please enter the item description.")
+        continue
+    
+    quantity = input("Quantity: ")
+    if not quantity.isdigit():
+        print("Please enter a valid quantity.")
+        continue
+    quantity = int(quantity)
+    
+    price = input("Price: ")
+    if not price.replace('.', '', 1).isdigit():
+        print("Please enter a valid price.")
+        continue
+    price = float(price)
+    
     total = quantity * price
     
     data['Owner'].append(owner)
@@ -25,7 +47,6 @@ while True:
     another_input = input("Do you want to add another item? (y/n): ")
     if another_input.lower() == "n":
         break
-
 df = pd.DataFrame(data, columns=['Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
 
 subtotal = df['Total'].sum()
