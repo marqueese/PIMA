@@ -12,7 +12,7 @@ while True:
     pet = input("Pet's name: ")
     item = input("Item description: ")
     quantity = int(input("Quantity: "))
-    price = int(input("Price: "))
+    price = float(input("Price: "))
     total = quantity * price
     
     data['Owner'].append(owner)
@@ -53,3 +53,8 @@ def invoice(data):
     print(f"Invoice Total: {data['Invoice Total']:<70}")
 
 invoice(data)
+
+
+#filename = input(" myVet.csv: ")
+#df.to_csv(filename, index=False)
+#print(f"Invoice data saved to {filename}.")
