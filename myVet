@@ -1,0 +1,55 @@
+import pandas as pd
+
+data = {'Owner': [],
+        'Pet': [],
+        'Item': [],
+        'Quantity': [],
+        'Price': [],
+        'Total': []}
+
+while True:
+    owner = input("Owner's name: ")
+    pet = input("Pet's name: ")
+    item = input("Item description: ")
+    quantity = int(input("Quantity: "))
+    price = int(input("Price: "))
+    total = quantity * price
+    
+    data['Owner'].append(owner)
+    data['Pet'].append(pet)
+    data['Item'].append(item)
+    data['Quantity'].append(quantity)
+    data['Price'].append(price)
+    data['Total'].append(total)
+    
+    another_input = input("Do you want to add another item? (y/n): ")
+    if another_input.lower() == "n":
+        break
+
+df = pd.DataFrame(data, columns=['Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
+
+subtotal = df['Total'].sum()
+vat = subtotal * 0.2
+invoice_total = subtotal + vat
+
+data['SubTotal'] = subtotal
+data['VAT'] = vat
+data['Invoice Total'] = invoice_total
+
+def invoice(data):
+    print("****************************************************************************")
+    print()
+    print("Invoice")
+    print("****************************************************************************")
+    print(f"Owner: {data['Owner'][0]}")
+    print(f"Pet: {data['Pet'][0]}")
+    print("****************************************************************************")
+    print("Item Description" + " " * 10 + "Quantity" + " " * 5 + "Price" + " " *5 + "Total")
+    for i in range(len(data['Item'])):
+        print(f"{data['Item'][i]:<30}{data['Quantity'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
+    print("****************************************************************************")
+    print(f"Subtotal: {data['SubTotal']:<76}")
+    print(f"VAT: {data['VAT']:<80}")
+    print(f"Invoice Total: {data['Invoice Total']:<70}")
+
+invoice(data)
