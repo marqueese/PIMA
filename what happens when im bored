@@ -1,0 +1,75 @@
+import pandas as pd
+import time
+
+
+data ={"Name": [],
+        "Age": [],
+        "IQ": [],
+        "Height": [],
+        "Game": [],
+        }
+
+while True: 
+    name = input("choose a name: ")
+    if not name:
+        print("choose a name you ASS")
+        continue
+    
+    age = input("how old are you: ")
+    if not age.isdigit():
+     if not age:
+        print("come on dude")
+        continue
+    age= int(age)
+    
+    iq = input("What is your recorded stupidity level: ")
+    if not iq.isdigit():
+        print("it can't be that low")
+        continue
+    iq = int(iq)
+    
+    height = input("How tall are you: ")
+    if not height:
+        print("it can't be that low")
+        continue
+    iq = int(iq)
+    
+    game = input("favourite game: ")
+    if not game:
+        print("you play rise of kingdoms")
+        continue
+    
+    data["Name"].append(name)
+    data["Age"].append(age)
+    data["IQ"].append(iq)
+    data["Height"].append(height)
+    data["Game"].append(game)
+    
+    change_input =input("would you like to change anything (y/n): ")
+    if change_input.lower() == "n":
+        break
+df = pd.DataFrame(data, columns=['name', 'age', 'IQ', 'height', 'game'])
+    
+def chart(data):
+     print("****************************************************************************")
+     print("Results")
+     print("****************************************************************************")
+     time.sleep(2)
+     print(f"name: {data['Name'][0]}")
+     print("****************************************************************************")
+     time.sleep(1)
+     print(f"age: {data['Age'][0]}")
+     print("****************************************************************************")
+     time.sleep(1)
+     print(f"iq: {data['IQ'][0]}")
+     print("****************************************************************************")
+     time.sleep(1)
+     print(f"height: {data['Height'][0]}")
+     print("****************************************************************************")
+     time.sleep(1)
+     print(f"game: {data['Game'][0]}")
+     print("****************************************************************************")
+     time.sleep(2)
+     print("You play rise of kingdoms competitively... die ")
+     print("****************************************************************************")
+chart(data)
