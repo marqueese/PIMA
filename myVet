@@ -1,8 +1,7 @@
 import pandas as pd
 import datetime
-import time
 
-#stored data
+# stored data
 data = {'Owner': [],
         'Pet': [],
         'Item': [],
@@ -12,37 +11,46 @@ data = {'Owner': [],
         'Date': [],
         'SubTotal': [],
         'VAT': [],
-        'Total Invoice': [],}
+        'Total Invoice': [],
+        }
 
 
-#while loop for inputing and storing stuff
-while True:
+def menu():
+    print("Please select an option:")
+    print("1. Add another item")
+    print("2. Create invoice")
+    print("3. View transactions")
+    print("4. Exit")
+    choice = input("Enter your choice (1-4): ")
+    return choice
 
+
+def add_item():
     owner = input("Owner's name: ")
     if not owner:
         print("Please enter the owner's name.")
-        continue
+        return
     
     pet = input("Pet's name: ")
     if not pet:
         print("Please enter the pet's name.")
-        continue
+        return
     
     item = input("Item description: ")
     if not item:
         print("Please enter the item description.")
-        continue
+        return
     
     quantity = input("Quantity: ")
     if not quantity.isdigit():
         print("Please enter a valid quantity.")
-        continue
+        return
     quantity = int(quantity)
     
     price = input("Price: ")
     if not price.replace('.', '', 1).isdigit():
         print("Please enter a valid price.")
-        continue
+        return
     price = float(price)
     
     x = datetime.datetime.now()
@@ -57,52 +65,62 @@ while True:
     data['Total'].append(total)
     data['Date'].append(x)
 
-    another_input = input("Do you want to add another item? (y/n): ")
-    if another_input.lower() == "n":
-        break
-df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
+while True:
+    add_item()
+    choice = menu()
+    if choice == "1":
+        continue
+    elif choice == "2":
+        # create invoice
+        df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
+        subtotal = df['Total'].sum()
+        vat = subtotal * 0.2
+        invoice_total = subtotal + vat
 
-subtotal = df['Total'].sum()
-vat = subtotal * 0.2
-invoice_total = subtotal + vat
+        data['SubTotal'] = subtotal
+        data['VAT'] = vat
+        data['Invoice Total'] = invoice_total
+        
+        #invoice display
+        def invoice(data):
+            print("*****************************************************************************************************************")
+            print("Invoice")
+            print("*****************************************************************************************************************")
+            print(f"Owner: {data['Owner'][0]}")
+            print(f"Pet: {data['Pet'][0]}")
+            print("*****************************************************************************************************************")
+            print("Item Description" + " " * 10 + "Quantity" + " " * 5 + "Price" + " " *5 + "Total")
+            for i in range(len(data['Item'])):
+                print(f"{data['Item'][i]:<30}{data['Quantity'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
+            print("*****************************************************************************************************************")
+            print(f"Subtotal: {data['SubTotal']:<76}")
+            print(f"VAT: {data['VAT']:<80}")
+            print(f"Invoice Total: {data['Invoice Total']:<70}\n\n\n")
 
-data['SubTotal'] = subtotal
-data['VAT'] = vat
-data['Invoice Total'] = invoice_total
+        invoice(data)
+    elif choice == "3":
+    
+        df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
+        subtotal = df['Total'].sum()
+        vat = subtotal * 0.2
+        invoice_total = subtotal + vat
 
-#decision = input("I - Create Invoice: \nV - View Transaction: \nX - Exit: ")
-#if decision.lower() == "i":
-   # invoice()
-#if decision.lower() == "v":
-#if decision.lower() == "x":
-    #exit()
+        data['SubTotal'] = subtotal
+        data['VAT'] = vat
+        data['Invoice Total'] = invoice_total
+    
+        def transactions(data):
+            x = datetime.datetime.now()
+            print("*****************************************************************************************************************")
+            print("Invoice")
+            print("*****************************************************************************************************************")
+            print("Date" + " " * 10 + "Name" + " " * 15 + "SubTotal" + " " * 5 + "VAT" + " " *5 + "Invoice Total")
+            for i in range(len(data['Item'])):
+                print(f"{x.strftime('%x')}  {'    '}{data['Owner'][i]:<19}{'  '}{data['SubTotal'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
 
-#invoice display
-def invoice(data):
-    print("*****************************************************************************************************************")
-    print("Invoice")
-    print("*****************************************************************************************************************")
-    print(f"Owner: {data['Owner'][0]}")
-    print(f"Pet: {data['Pet'][0]}")
-    print("*****************************************************************************************************************")
-    print("Item Description" + " " * 10 + "Quantity" + " " * 5 + "Price" + " " *5 + "Total")
-    for i in range(len(data['Item'])):
-        print(f"{data['Item'][i]:<30}{data['Quantity'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
-    print("*****************************************************************************************************************")
-    print(f"Subtotal: {data['SubTotal']:<76}")
-    print(f"VAT: {data['VAT']:<80}")
-    print(f"Invoice Total: {data['Invoice Total']:<70}\n\n\n")
+            print("*****************************************************************************************************************")
+        transactions(data)
+    elif choice == "4":
+        exit()
 
-invoice(data)
 
-def transactions(data):
-   x = datetime.datetime.now()
-   print("*****************************************************************************************************************")
-   print("Invoice")
-   print("*****************************************************************************************************************")
-   print("Date" + " " * 10 + "Name" + " " * 15 + "SubTotal" + " " * 5 + "VAT" + " " *5 + "Invoice Total")
-   for i in range(len(data['Item'])):
-       print(f"{x.strftime('%x')}  {'    '}{data['Owner'][i]:<19}{'  '}{data['SubTotal'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
-
-   print("*****************************************************************************************************************")
-transactions(data)
