@@ -1,13 +1,20 @@
 import pandas as pd
+import datetime
+import time
 
+#stored data
 data = {'Owner': [],
         'Pet': [],
         'Item': [],
         'Quantity': [],
         'Price': [],
-        'Total': []}
+        'Total': [],
+        'Date': [],}
 
+
+#while loop for inputing and storing stuff
 while True:
+
     owner = input("Owner's name: ")
     if not owner:
         print("Please enter the owner's name.")
@@ -35,6 +42,8 @@ while True:
         continue
     price = float(price)
     
+    x = datetime.datetime.now()
+
     total = quantity * price
     
     data['Owner'].append(owner)
@@ -43,11 +52,12 @@ while True:
     data['Quantity'].append(quantity)
     data['Price'].append(price)
     data['Total'].append(total)
-    
+    data['Date'].append(x)
+
     another_input = input("Do you want to add another item? (y/n): ")
     if another_input.lower() == "n":
         break
-df = pd.DataFrame(data, columns=['Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
+df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
 
 subtotal = df['Total'].sum()
 vat = subtotal * 0.2
@@ -57,24 +67,41 @@ data['SubTotal'] = subtotal
 data['VAT'] = vat
 data['Invoice Total'] = invoice_total
 
+#decision = input("I - Create Invoice: \nV - View Transaction: \nX - Exit: ")
+#if decision.lower() == "i":
+   # invoice()
+#if decision.lower() == "v":
+#if decision.lower() == "x":
+    #exit()
+
+#invoice display
 def invoice(data):
-    print("****************************************************************************")
-    print()
+    print("*****************************************************************************************************************")
     print("Invoice")
-    print("****************************************************************************")
+    print("*****************************************************************************************************************")
     print(f"Owner: {data['Owner'][0]}")
     print(f"Pet: {data['Pet'][0]}")
-    print("****************************************************************************")
+    print("*****************************************************************************************************************")
     print("Item Description" + " " * 10 + "Quantity" + " " * 5 + "Price" + " " *5 + "Total")
     for i in range(len(data['Item'])):
         print(f"{data['Item'][i]:<30}{data['Quantity'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
-    print("****************************************************************************")
+    print("*****************************************************************************************************************")
     print(f"Subtotal: {data['SubTotal']:<76}")
     print(f"VAT: {data['VAT']:<80}")
-    print(f"Invoice Total: {data['Invoice Total']:<70}")
+    print(f"Invoice Total: {data['Invoice Total']:<70}\n\n\n")
 
 invoice(data)
 
+def transcations(data):
+    print("*****************************************************************************************************************")
+    print("Transaction history")
+    print("*****************************************************************************************************************")
+    print("Date" + " " * 10 +"Customer name" + " " * 5 + "Subtotal" + " " * 5 + "VAT" + " " *5 + "Invoice Total")
+    for i in range(len(data['Item'])):
+        print(x.strftime("%x"),f"{data['Owner'][0]}"f"{data['SubTotal']:<76}"f"{data['VAT']:<80}"f"{data['Invoice Total']:<70}")
+    print("*****************************************************************************************************************")
+
+transcations(data)
 
 #filename = input(" myVet.csv: ")
 #df.to_csv(filename, index=False)
