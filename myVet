@@ -98,6 +98,7 @@ while True:
             print(f"Invoice Total: {data['Invoice Total']:<70}\n\n\n")
 
         invoice(data)
+        menu()
     elif choice == "3":
     
         df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
@@ -120,7 +121,10 @@ while True:
 
             print("*****************************************************************************************************************")
         transactions(data)
+        menu()
     elif choice == "4":
         exit()
+    else: 
+        print("dude you suck")
 
 
