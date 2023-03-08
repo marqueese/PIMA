@@ -9,7 +9,10 @@ data = {'Owner': [],
         'Quantity': [],
         'Price': [],
         'Total': [],
-        'Date': [],}
+        'Date': [],
+        'SubTotal': [],
+        'VAT': [],
+        'Total Invoice': [],}
 
 
 #while loop for inputing and storing stuff
@@ -92,17 +95,14 @@ def invoice(data):
 
 invoice(data)
 
-def transcations(data):
-    print("*****************************************************************************************************************")
-    print("Transaction history")
-    print("*****************************************************************************************************************")
-    print("Date" + " " * 10 +"Customer name" + " " * 5 + "Subtotal" + " " * 5 + "VAT" + " " *5 + "Invoice Total")
-    for i in range(len(data['Item'])):
-        print(x.strftime("%x"),f"{data['Owner'][0]}"f"{data['SubTotal']:<76}"f"{data['VAT']:<80}"f"{data['Invoice Total']:<70}")
-    print("*****************************************************************************************************************")
+def transactions(data):
+   x = datetime.datetime.now()
+   print("*****************************************************************************************************************")
+   print("Invoice")
+   print("*****************************************************************************************************************")
+   print("Date" + " " * 10 + "Name" + " " * 15 + "SubTotal" + " " * 5 + "VAT" + " " *5 + "Invoice Total")
+   for i in range(len(data['Item'])):
+       print(f"{x.strftime('%x')}  {'    '}{data['Owner'][i]:<19}{'  '}{data['SubTotal'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
 
-transcations(data)
-
-#filename = input(" myVet.csv: ")
-#df.to_csv(filename, index=False)
-#print(f"Invoice data saved to {filename}.")
+   print("*****************************************************************************************************************")
+transactions(data)
