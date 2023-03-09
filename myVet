@@ -1,6 +1,15 @@
 import pandas as pd
 import datetime
 
+def menu():
+    print("Please select an option:")
+    print("1. Add another item")
+    print("2. Create invoice")
+    print("3. View transactions")
+    print("4. Exit")
+    choice = input("Enter your choice (1-4): ")
+    return choice
+
 # stored data
 data = {'Owner': [],
         'Pet': [],
@@ -13,16 +22,6 @@ data = {'Owner': [],
         'VAT': [],
         'Total Invoice': [],
         }
-
-
-def menu():
-    print("Please select an option:")
-    print("1. Add another item")
-    print("2. Create invoice")
-    print("3. View transactions")
-    print("4. Exit")
-    choice = input("Enter your choice (1-4): ")
-    return choice
 
 
 def add_item():
@@ -51,6 +50,7 @@ def add_item():
     if not price.replace('.', '', 1).isdigit():
         print("Please enter a valid price.")
         return
+
     price = float(price)
     
     x = datetime.datetime.now()
@@ -64,25 +64,30 @@ def add_item():
     data['Price'].append(price)
     data['Total'].append(total)
     data['Date'].append(x)
+    data['Date'].append("another_item")
+
 
 while True:
     add_item()
     choice = menu()
     if choice == "1":
-        continue
+        data["another_item"] = input("Item description: ")
+        if not "another_item":
+            print("Please enter the item description.")
+        menu()
     elif choice == "2":
-        # create invoice
-        df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
-        subtotal = df['Total'].sum()
-        vat = subtotal * 0.2
-        invoice_total = subtotal + vat
-
-        data['SubTotal'] = subtotal
-        data['VAT'] = vat
-        data['Invoice Total'] = invoice_total
-        
         #invoice display
         def invoice(data):
+
+            df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
+            subtotal = df['Total'].sum()
+            vat = subtotal * 0.2
+            invoice_total = subtotal + vat
+
+            data['SubTotal'] = subtotal
+            data['VAT'] = vat
+            data['Invoice Total'] = invoice_total
+
             print("*****************************************************************************************************************")
             print("Invoice")
             print("*****************************************************************************************************************")
@@ -117,7 +122,7 @@ while True:
             print("*****************************************************************************************************************")
             print("Date" + " " * 10 + "Name" + " " * 15 + "SubTotal" + " " * 5 + "VAT" + " " *5 + "Invoice Total")
             for i in range(len(data['Item'])):
-                print(f"{x.strftime('%x')}  {'    '}{data['Owner'][i]:<19}{'  '}{data['SubTotal'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
+                print(f"{'    '}{data['Owner'][i]:<19}{'  '}{data['SubTotal'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
 
             print("*****************************************************************************************************************")
         transactions(data)
@@ -126,5 +131,4 @@ while True:
         exit()
     else: 
         print("dude you suck")
-
-
+        menu()
