@@ -1,15 +1,6 @@
 import pandas as pd
 import datetime
 
-def menu():
-    print("Please select an option:")
-    print("1. Add another item")
-    print("2. Create invoice")
-    print("3. View transactions")
-    print("4. Exit")
-    choice = input("Enter your choice (1-4): ")
-    return choice
-
 # stored data
 data = {'Owner': [],
         'Pet': [],
@@ -23,40 +14,47 @@ data = {'Owner': [],
         'Total Invoice': [],
         }
 
+def menu():
+    print("Please select an option:")
+    print("1. Add another item")
+    print("2. Create invoice")
+    print("3. View transactions")
+    print("4. Exit")
+    choice = input("Enter your choice (1-4): ")
+    return choice
 
 def add_item():
     owner = input("Owner's name: ")
     if not owner:
         print("Please enter the owner's name.")
         return
-    
+
     pet = input("Pet's name: ")
     if not pet:
         print("Please enter the pet's name.")
         return
-    
+
     item = input("Item description: ")
     if not item:
         print("Please enter the item description.")
         return
-    
+
     quantity = input("Quantity: ")
     if not quantity.isdigit():
         print("Please enter a valid quantity.")
         return
     quantity = int(quantity)
-    
+
     price = input("Price: ")
     if not price.replace('.', '', 1).isdigit():
         print("Please enter a valid price.")
         return
-
     price = float(price)
-    
+
     x = datetime.datetime.now()
 
     total = quantity * price
-    
+
     data['Owner'].append(owner)
     data['Pet'].append(pet)
     data['Item'].append(item)
@@ -64,71 +62,53 @@ def add_item():
     data['Price'].append(price)
     data['Total'].append(total)
     data['Date'].append(x)
-    data['Date'].append("another_item")
 
+    print("Item added successfully.\n")
+
+def create_invoice():
+    if not data['Item']:
+        print("No items found.\n")
+        return
+
+    subtotal = sum(data['Total'])
+    vat = subtotal * 0.2
+    total = subtotal + vat
+
+    data['SubTotal'].append(subtotal)
+    data['VAT'].append(vat)
+    data['Total Invoice'].append(total)
+
+    # Display invoice as a table
+    invoice_data = {'Item': data['Item'], 'Quantity': data['Quantity'], 'Price': data['Price'], 'Total': data['Total']}
+    invoice_df = pd.DataFrame(invoice_data)
+    invoice_df.loc[len(invoice_df.index)] = ['Subtotal', '', '', subtotal]
+    invoice_df.loc[len(invoice_df.index)] = ['VAT', '', '', vat]
+    invoice_df.loc[len(invoice_df.index)] = ['Total', '', '', total]
+
+    print(invoice_df.to_string(index=False))
+    print("\nInvoice created successfully.\n")
+
+def view_transactions():
+    if not data['Item']:
+        print("No items found.\n")
+        return
+
+    df = pd.DataFrame(data)
+    print(df.to_string(index=False))
+    print()
 
 while True:
-    add_item()
     choice = menu()
-    if choice == "1":
-        data["another_item"] = input("Item description: ")
-        if not "another_item":
-            print("Please enter the item description.")
-        menu()
-    elif choice == "2":
-        #invoice display
-        def invoice(data):
-
-            df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
-            subtotal = df['Total'].sum()
-            vat = subtotal * 0.2
-            invoice_total = subtotal + vat
-
-            data['SubTotal'] = subtotal
-            data['VAT'] = vat
-            data['Invoice Total'] = invoice_total
-
-            print("*****************************************************************************************************************")
-            print("Invoice")
-            print("*****************************************************************************************************************")
-            print(f"Owner: {data['Owner'][0]}")
-            print(f"Pet: {data['Pet'][0]}")
-            print("*****************************************************************************************************************")
-            print("Item Description" + " " * 10 + "Quantity" + " " * 5 + "Price" + " " *5 + "Total")
-            for i in range(len(data['Item'])):
-                print(f"{data['Item'][i]:<30}{data['Quantity'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
-            print("*****************************************************************************************************************")
-            print(f"Subtotal: {data['SubTotal']:<76}")
-            print(f"VAT: {data['VAT']:<80}")
-            print(f"Invoice Total: {data['Invoice Total']:<70}\n\n\n")
-
-        invoice(data)
-        menu()
-    elif choice == "3":
     
-        df = pd.DataFrame(data, columns=['Date', 'Owner', 'Pet', 'Item', 'Quantity', 'Price', 'Total'])
-        subtotal = df['Total'].sum()
-        vat = subtotal * 0.2
-        invoice_total = subtotal + vat
+    if choice == '1':
+        add_item()
+    elif choice == '2':
+        create_invoice()
+    elif choice == '3':
+        view_transactions()
+    elif choice == '4':
+        break
+    else:
+        print("Invalid choice. Please try again.\n")
 
-        data['SubTotal'] = subtotal
-        data['VAT'] = vat
-        data['Invoice Total'] = invoice_total
-    
-        def transactions(data):
-            x = datetime.datetime.now()
-            print("*****************************************************************************************************************")
-            print("Invoice")
-            print("*****************************************************************************************************************")
-            print("Date" + " " * 10 + "Name" + " " * 15 + "SubTotal" + " " * 5 + "VAT" + " " *5 + "Invoice Total")
-            for i in range(len(data['Item'])):
-                print(f"{'    '}{data['Owner'][i]:<19}{'  '}{data['SubTotal'][i]:<10}{data['Price'][i]:<10}{data['Total'][i]:<10}")
-
-            print("*****************************************************************************************************************")
-        transactions(data)
-        menu()
-    elif choice == "4":
-        exit()
-    else: 
-        print("dude you suck")
-        menu()
+print("Exiting program. Goodbye!") 
