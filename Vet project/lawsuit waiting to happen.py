@@ -18,6 +18,21 @@ data = {'Owner': [],
 
 filename = "vet.csv"
 
+
+owner = input("Owner's name: ")
+if not owner:
+    print("Please enter the owner's name.")
+
+pet = input("Pet's name: ")
+if not pet:
+    print("Please enter the pet's name.")
+    print(" ")
+    print(" ")
+
+data['Owner'].append(owner)
+data['Pet'].append(pet)
+
+
 def menu():
     print("Please select an option:")
     print("1. Add another item")
@@ -28,16 +43,6 @@ def menu():
     return choice
 
 def add_item():
-    owner = input("Owner's name: ")
-    if not owner:
-        print("Please enter the owner's name.")
-        return
-
-    pet = input("Pet's name: ")
-    if not pet:
-        print("Please enter the pet's name.")
-        return
-
     item = input("Item description: ")
     if not item:
         print("Please enter the item description.")
@@ -59,8 +64,6 @@ def add_item():
 
     total = quantity * price
 
-    data['Owner'].append(owner)
-    data['Pet'].append(pet)
     data['Item'].append(item)
     data['Quantity'].append(quantity)
     data['Price'].append(price)
